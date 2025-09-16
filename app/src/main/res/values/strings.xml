@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">Cook By Ingredients</string>
+    <string name="username_hint">Type your username</string>
+    <string name="apptitle">Welcome</string>
 </resources>
