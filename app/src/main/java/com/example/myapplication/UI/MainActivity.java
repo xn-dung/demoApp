@@ -10,13 +10,25 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.widget.EditText;
 import android.widget.Button;
 
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.example.myapplication.model.User;
 import com.example.myapplication.R;
+
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONObject;
+
+import java.util.*;
 
 public class MainActivity extends AppCompatActivity {
     private EditText myUsername;
     private EditText myPassword;
     private Button myButton;
     private TextView errorMessage;
+    private User user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
                     displayError("Password is required");
                 }
                 else{
-
+                    loginWithAPI(username,password);
                 }
             }
         });
@@ -61,4 +73,36 @@ public class MainActivity extends AppCompatActivity {
             errorMessage.setVisibility(View.VISIBLE);
         }
     }
+    private void loginWithAPI(String username, String password){
+        String url = "https://kdq3qv45-3000.asse.devtunnels.ms/login";
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        HashMap<String,String> params = new HashMap<>();
+        params.put("username",username);
+        params.put("password",password);
+
+        JSONObject jsonBody = new JSONObject(params);
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                Request.Method.POST,
+                url,
+                jsonBody,
+                response -> {
+                    try {
+                        boolean success = response.getBoolean("success");
+                        String message = response.getString("message");
+
+                        if (success) {
+                            displayError("Đăng nhập thành công: " + message);
+                        } else {
+                            displayError("Sai tài khoản hoặc mật khẩu");
+                        }
+                    } catch (Exception e) {
+                        displayError("Lỗi parse JSON: " + e.getMessage());
+                    }
+                },
+                error -> displayError("Lỗi kết nối: " + error.toString())
+        );
+
+        requestQueue.add(jsonObjectRequest);
+    }
+
 }
