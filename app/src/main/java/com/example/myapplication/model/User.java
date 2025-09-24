@@ -1,10 +1,9 @@
 package com.example.myapplication.model;
 
 public class User {
-    private int Id;
     private String username;
     private String password;
-    private String fullname;
+    private String name;
     private String address;
     private String email;
     private String tel;
@@ -16,21 +15,14 @@ public class User {
     public String getPassword() {
         return password;
     }
-    public int getId() {
-        return Id;
-    }
-
-    public void setId(int id) {
-        Id = id;
-    }
     public User(String username, String password) {
         this.username = username;
         this.password = password;
     }
-    public User(String username, String password, String fullname, String address, String email, String tel) {
+    public User(String username, String password, String name, String address, String email, String tel) {
         this.username = username;
         this.password = password;
-        this.fullname = fullname;
+        this.name = name;
         this.address = address;
         this.email = email;
         this.tel = tel;
@@ -49,7 +41,7 @@ public class User {
     }
 
     public String getFullname() {
-        return fullname;
+        return name;
     }
 
     public String getTel() {
@@ -69,7 +61,7 @@ public class User {
     }
 
     public void setFullname(String fullname) {
-        this.fullname = fullname;
+        this.name = fullname;
     }
 
     public void setTel(String tel) {

@@ -28,9 +28,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="24dp"
-                tools:srcCompat="@tools:sample/avatars" />
+                android:adjustViewBounds="true"
+                android:maxWidth="150dp"
+                android:maxHeight="150dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/logo_app"
+                android:contentDescription="Logo App"/>
 
             <TextView
                 android:id="@+id/titleText"

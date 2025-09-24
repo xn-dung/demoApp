@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private Button myButton;
     private TextView errorMessage;
     private User user;
+    private TextView registerButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,15 +40,9 @@ public class MainActivity extends AppCompatActivity {
         myUsername = findViewById(R.id.username);
         myPassword  = findViewById(R.id.password);
         myButton = findViewById(R.id.btnLogin);
+        registerButton = findViewById(R.id.textViewLinkRegister);
 
         errorMessage = findViewById(R.id.errorMessage);
-        textViewLinkRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, RegisterActivity.class); // Giả sử bạn có RegisterActivity
-                startActivity(intent);
-            }
-        });
         myButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,6 +60,13 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+        registerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, RegisterActivity.class);
+                startActivity(intent);
+            }
+        });
 
     }
     private void displayError(String message){
@@ -74,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     private void loginWithAPI(String username, String password){
-        String url = "https://kdq3qv45-3000.asse.devtunnels.ms/login";
+        String url = "https://661r3b81-3000.asse.devtunnels.ms/api/login";
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         HashMap<String,String> params = new HashMap<>();
         params.put("username",username);
@@ -87,11 +89,11 @@ public class MainActivity extends AppCompatActivity {
                 jsonBody,
                 response -> {
                     try {
-                        boolean success = response.getBoolean("success");
-                        String message = response.getString("message");
+                        String ten = response.getString("name");
 
-                        if (success) {
-                            displayError("Đăng nhập thành công: " + message);
+
+                        if (!ten.isEmpty()) {
+                            displayError("Đăng nhập thành công: " + ten);
                         } else {
                             displayError("Sai tài khoản hoặc mật khẩu");
                         }
