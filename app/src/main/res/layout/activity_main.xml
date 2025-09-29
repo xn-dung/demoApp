@@ -10,24 +10,27 @@
     tools:context=".UI.MainActivity">
 
     <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:fillViewport="true"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:fillViewport="true">
+        app:layout_constraintEnd_toEndOf="parent">
 
+        <!-- Container trung gian căn giữa dọc -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="16dp">
 
             <ImageView
                 android:id="@+id/imageView3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
                 android:adjustViewBounds="true"
                 android:maxWidth="150dp"
                 android:maxHeight="150dp"
@@ -39,10 +42,10 @@
                 android:id="@+id/titleText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
                 android:text="@string/apptitle"
                 android:textSize="24sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:layout_marginTop="16dp"/>
 
             <EditText
                 android:id="@+id/username"
@@ -66,13 +69,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:backgroundTint="@color/green_pastel"
-                android:text="Login" />
+                android:text="Login"
+                android:textStyle="bold"
+                android:textAllCaps="false" />
 
             <TextView
                 android:id="@+id/textViewLinkRegister"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
                 android:layout_marginTop="24dp"
                 android:clickable="true"
                 android:focusable="true"
@@ -83,10 +87,33 @@
                 android:id="@+id/errorMessage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
                 android:layout_marginTop="16dp"
                 android:textColor="@android:color/holo_red_dark"
                 android:visibility="invisible" />
+
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/checkBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:scaleX="0.9"
+                android:scaleY="0.9"
+                android:text="Remember account"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:padding="4dp"
+                app:buttonTint="@color/green_pastel"
+                app:useMaterialThemeColors="true" />
+
+            <TextView
+                android:id="@+id/textForgotPassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="Forgot password?"
+                android:textColor="?android:attr/textColorLink"
+                android:clickable="true"
+                android:focusable="true" />
 
         </LinearLayout>
     </ScrollView>

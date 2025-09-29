@@ -2,6 +2,7 @@ package com.example.myapplication.UI;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.content.Intent;
 import androidx.activity.EdgeToEdge;
@@ -89,11 +90,13 @@ public class MainActivity extends AppCompatActivity {
                 jsonBody,
                 response -> {
                     try {
-                        String ten = response.getString("name");
+                        String name = response.getString("name");
 
 
-                        if (!ten.isEmpty()) {
-                            displayError("Đăng nhập thành công: " + ten);
+                        if (!name.isEmpty()) {
+                            Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+                            intent.putExtra("fullname", name);
+                            startActivity(intent);
                         } else {
                             displayError("Sai tài khoản hoặc mật khẩu");
                         }

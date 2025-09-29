@@ -35,6 +35,9 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText tel;
     private EditText confirmPassword;
     private Button btnRegister;
+    private Button btnBack;
+
+    private boolean isUserExit = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +53,7 @@ public class RegisterActivity extends AppCompatActivity {
         btnRegister = findViewById(R.id.button2);
         errorMessage = findViewById(R.id.errorMessage);
         confirmPassword = findViewById(R.id.editConfirmPassword);
+        btnBack = findViewById(R.id.buttonBack);
 
         username.addTextChangedListener(new TextWatcher() {
             @Override
@@ -80,6 +84,9 @@ public class RegisterActivity extends AppCompatActivity {
                 if(userName.isEmpty()){
                     displayError("Username is required");
                 }
+                else if(isUserExit){
+                    displayError("Username đã tồn tại");
+                }
                 else if(passWord.isEmpty()){
                     displayError("Password is required");
                 }
@@ -101,15 +108,19 @@ public class RegisterActivity extends AppCompatActivity {
                 else{
                     User user = new User(userName,passWord,fullName,Address,Email,Tel);
                     RegisterWithAPI(user);
-                    Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
-                    startActivity(intent);
                 }
 
 
             }
         });
 
-
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
     }
     private void displayError(String message){
         if(errorMessage != null){
@@ -138,6 +149,8 @@ public class RegisterActivity extends AppCompatActivity {
                         String name = response.getString("name");
                         if (!name.isEmpty()) {
                             displayError("Đăng ký thành công");
+                            Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+                            startActivity(intent);
                         } else {
                             displayError("Lỗi thông tin đăng kí");
                         }
@@ -164,13 +177,17 @@ public class RegisterActivity extends AppCompatActivity {
                     try {
                         String name = response.getString("name");
                         if (!name.isEmpty()) {
-                            displayError("Username đã tồn tại");
+                            isUserExit = true;
                         }
                     } catch (Exception e) {
                         displayError("Lỗi parse JSON: " + e.getMessage());
+                        isUserExit = false;
                     }
                 },
-                error -> displayError("Lỗi kết nối: " + error.toString())
+                error -> {
+                    displayError("Lỗi kết nối: " + error.toString());
+                    isUserExit = false;
+                }
 
         );
         requestQueue.add(jsonObjectRequest);
