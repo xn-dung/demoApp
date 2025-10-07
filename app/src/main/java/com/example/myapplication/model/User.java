@@ -1,6 +1,8 @@
 package com.example.myapplication.model;
 import java.io.Serializable;
+import java.util.Objects;
 public class User implements Serializable {
+    private String id;
     private String username;
     private String password;
     private String name;
@@ -18,6 +20,15 @@ public class User implements Serializable {
     public User(String username, String password) {
         this.username = username;
         this.password = password;
+    }
+    public User(String id,String username, String password, String name, String address, String email, String tel) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.name = name;
+        this.address = address;
+        this.email = email;
+        this.tel = tel;
     }
     public User(String username, String password, String name, String address, String email, String tel) {
         this.username = username;
@@ -66,5 +77,22 @@ public class User implements Serializable {
 
     public void setTel(String tel) {
         this.tel = tel;
+    }
+    @Override
+    public int hashCode(){
+        return Objects.hash(username,password,name,address,email,tel);
+    }
+    @Override
+    public boolean equals(Object o ) {
+        if(this == o) return true;
+        if(o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+
+        return Objects.equals(username,user.username) && Objects.equals(password,user.password) && Objects.equals(name,user.name) && Objects.equals(address,user.address) && Objects.equals(email,user.email) && Objects.equals(tel,user.tel);
+
+    }
+
+    public String getId() {
+        return id;
     }
 }

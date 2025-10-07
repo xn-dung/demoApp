@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loginWithAPI(String username, String password){
-        String url = "https://mobilenodejs.onrender.com/api/login";
+        String url = "https://661r3b81-3000.asse.devtunnels.ms/api/nguoidung/login";
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         HashMap<String,String> params = new HashMap<>();
         params.put("username",username);
@@ -85,15 +85,14 @@ public class MainActivity extends AppCompatActivity {
                 jsonBody,
                 response -> {
                     try {
-                        JSONObject user = response.getJSONObject("user");
-                        String id = user.getString("id");
-                        String name = user.getString("name");
-                        String address = user.getString("address");
-                        String email = user.getString("email");
-                        String phone = user.getString("phone");
-                        String userName = user.getString("username");
-                        String passWord = user.getString("password");
-                        User logginUser= new User(userName,passWord,name,address,email,phone);
+                        String id = response.getString("_id");
+                        String name = response.getString("name");
+                        String address = response.getString("address");
+                        String email = response.getString("email");
+                        String phone = response.getString("phone");
+                        String userName = response.getString("username");
+                        String passWord = response.getString("password");
+                        User logginUser= new User(id,userName,passWord,name,address,email,phone);
 
 
                         if (!logginUser.getFullname().isEmpty()) {

@@ -27,9 +27,69 @@ import org.json.JSONObject;
 
 import java.util.*;
 public class UserProfileActivity extends AppCompatActivity{
+
+    private Button btnLogout;
+    private TextView userFullname;
+    private TextView userEmail;
+    private TextView textSettings;
+    private User user;
+    private BottomNavigationView bottomNavigationView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_profile);
+        btnLogout = findViewById(R.id.btnLogout);
+        userFullname = findViewById(R.id.userFullName);
+        userEmail = findViewById(R.id.userEmail);
+        textSettings = findViewById(R.id.textSettings);
+        bottomNavigationView = findViewById(R.id.bottomNavView);
+        Intent intent = getIntent();
+        user = (User) intent.getSerializableExtra("User");
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(UserProfileActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        String fullname = user.getFullname();
+        String email = user.getEmail();
+        userFullname.setText(fullname);
+        userEmail.setText(email);
+        textSettings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(UserProfileActivity.this, EditProfileActivity.class);
+                intent.putExtra("User",user);
+                startActivity(intent);
+            }
+        });
+
+
+        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                int itemId = menuItem.getItemId();
+                if(itemId == R.id.menuHome){
+                    Intent intent = new Intent(UserProfileActivity.this, HomeActivity.class);
+                    intent.putExtra("User",user);
+                    startActivity(intent);
+                    return true;
+
+                }
+                else if(itemId == R.id.menuProfile){
+                    return true;
+                }
+//                else if(itemId == R.id.menuSearch){
+//                    Intent intent = new Intent(UserProfileActivity.this, SearchFoodActivity.class);
+//                    intent.putExtra("User",user);
+//                    startActivity(intent);
+//                    return true;
+//                }
+                return false;
+            }
+        });
     }
+
 }

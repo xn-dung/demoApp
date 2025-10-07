@@ -51,13 +51,19 @@ public class HomeActivity extends AppCompatActivity{
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 int itemId = menuItem.getItemId();
                 if(itemId == R.id.menuHome){
-                    Intent intent = new Intent(HomeActivity.this, HomeActivity.class);
-                    startActivity(intent);
-
+                    return true;
                 }
                 else if(itemId == R.id.menuProfile){
                     Intent intent = new Intent(HomeActivity.this, UserProfileActivity.class);
+                    intent.putExtra("User", user);
                     startActivity(intent);
+                    return true;
+                }
+                else if(itemId == R.id.menuSearch){
+                    Intent intent = new Intent(HomeActivity.this, SearchFoodActivity.class);
+                    intent.putExtra("User", user);
+                    startActivity(intent);
+                    return true;
                 }
                 return false;
             }
