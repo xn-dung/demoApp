@@ -19,7 +19,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- Container trung gian căn giữa dọc -->
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -83,13 +83,7 @@
                 android:text="Do not have an account? Register"
                 android:textColor="?android:attr/textColorLink" />
 
-            <TextView
-                android:id="@+id/errorMessage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:textColor="@android:color/holo_red_dark"
-                android:visibility="invisible" />
+
 
             <com.google.android.material.checkbox.MaterialCheckBox
                 android:id="@+id/checkBox"

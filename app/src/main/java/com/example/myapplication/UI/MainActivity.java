@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.widget.EditText;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.myapplication.model.User;
@@ -43,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
         myButton = findViewById(R.id.btnLogin);
         registerButton = findViewById(R.id.textViewLinkRegister);
 
-        errorMessage = findViewById(R.id.errorMessage);
         myButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -51,10 +51,10 @@ public class MainActivity extends AppCompatActivity {
                 String password = myPassword.getText().toString();
                 if(username.isEmpty())
                 {
-                    displayError("Username is required");
+                    Toast.makeText(MainActivity.this, "Username is required", Toast.LENGTH_SHORT).show();
                 }
                 else if(password.isEmpty()){
-                    displayError("Password is required");
+                    Toast.makeText(MainActivity.this, "Password is required", Toast.LENGTH_SHORT).show();
                 }
                 else{
                     loginWithAPI(username,password);
@@ -70,14 +70,9 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-    private void displayError(String message){
-        if(errorMessage != null){
-            errorMessage.setText(message);
-            errorMessage.setVisibility(View.VISIBLE);
-        }
-    }
+
     private void loginWithAPI(String username, String password){
-        String url = "https://661r3b81-3000.asse.devtunnels.ms/api/login";
+        String url = "https://mobilenodejs.onrender.com/api/login";
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         HashMap<String,String> params = new HashMap<>();
         params.put("username",username);
@@ -90,21 +85,29 @@ public class MainActivity extends AppCompatActivity {
                 jsonBody,
                 response -> {
                     try {
-                        String name = response.getString("name");
+                        JSONObject user = response.getJSONObject("user");
+                        String id = user.getString("id");
+                        String name = user.getString("name");
+                        String address = user.getString("address");
+                        String email = user.getString("email");
+                        String phone = user.getString("phone");
+                        String userName = user.getString("username");
+                        String passWord = user.getString("password");
+                        User logginUser= new User(userName,passWord,name,address,email,phone);
 
 
-                        if (!name.isEmpty()) {
+                        if (!logginUser.getFullname().isEmpty()) {
                             Intent intent = new Intent(MainActivity.this, HomeActivity.class);
-                            intent.putExtra("fullname", name);
+                            intent.putExtra("User",logginUser);
                             startActivity(intent);
                         } else {
-                            displayError("Sai tài khoản hoặc mật khẩu");
+                            Toast.makeText(MainActivity.this,"Sai tài khoản hoặc mật khẩu",Toast.LENGTH_SHORT).show();
                         }
                     } catch (Exception e) {
-                        displayError("Lỗi parse JSON: " + e.getMessage());
+                        Toast.makeText(MainActivity.this,"Lỗi parse JSON: " + e.getMessage(),Toast.LENGTH_SHORT).show();
                     }
                 },
-                error -> displayError("Lỗi kết nối: " + error.toString())
+                error -> Toast.makeText(MainActivity.this,"Lỗi kết nối: " + error.toString(),Toast.LENGTH_SHORT).show()
         );
 
         requestQueue.add(jsonObjectRequest);
