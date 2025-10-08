@@ -60,7 +60,7 @@ public class HomeActivity extends AppCompatActivity{
                     return true;
                 }
                 else if(itemId == R.id.menuSearch){
-                    Intent intent = new Intent(HomeActivity.this, SearchFoodActivity.class);
+//                    Intent intent = new Intent(HomeActivity.this, SearchFoodActivity.class);
                     intent.putExtra("User", user);
                     startActivity(intent);
                     return true;
@@ -68,8 +68,7 @@ public class HomeActivity extends AppCompatActivity{
                 return false;
             }
         });
-
-
+        
 
 
     }

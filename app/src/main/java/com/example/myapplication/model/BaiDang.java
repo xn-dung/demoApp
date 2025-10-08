@@ -1,7 +1,8 @@
 package com.example.myapplication.model;
+import java.io.Serializable;
 import java.util.*;
 
-public class BaiDang {
+public class BaiDang implements Serializable {
 
     private String id;
     private String tenMon;

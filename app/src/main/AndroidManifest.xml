@@ -34,6 +34,14 @@
         <activity
             android:name=".UI.EditProfileActivity"
             android:exported="true"/>
+        <activity android:name=".UI.SearchFoodByNameActivity"
+            android:exported="true"/>
+        <activity android:name=".UI.FoundFoodActivity"
+            android:exported="true"/>
+        <activity android:name=".UI.FoodPostActivity"
+            android:exported="true"/>
+
+
     </application>
 
 </manifest>

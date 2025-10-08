@@ -47,6 +47,14 @@ public class FoundFoodActivity extends AppCompatActivity{
         searchFood(foodName);
         myadapter = new FoundFoodAdapter( R.layout.food_card_home, FoundFoodActivity.this, bd);
         lv.setAdapter(myadapter);
+        lv.setOnItemClickListener((parent, view, position, id) -> {
+            BaiDang selectedBaiDang = bd.get(position);
+            Toast.makeText(this, "Bạn đã chọn món " + selectedBaiDang.getTenMon(), Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(FoundFoodActivity.this, FoodPostActivity.class);
+            intent.putExtra("baidang", selectedBaiDang);
+            startActivity(intent);
+
+        });
     }
 
     private void searchFood(String foodName) {
