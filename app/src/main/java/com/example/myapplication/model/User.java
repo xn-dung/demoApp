@@ -1,12 +1,17 @@
 package com.example.myapplication.model;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
+    private String _id;
     private String username;
     private String password;
     private String name;
     private String address;
     private String email;
     private String tel;
+
+
 
     public String getUsername() {
         return username;
@@ -19,8 +24,18 @@ public class User {
         this.username = username;
         this.password = password;
     }
-    public User(String username, String password, String name, String address, String email, String tel) {
+    public User( String username, String password, String name, String address, String email, String tel) {
         this.username = username;
+        this.password = password;
+        this.name = name;
+        this.address = address;
+        this.email = email;
+        this.tel = tel;
+    }
+
+    public User( String _id, String username, String password, String name, String address, String email, String tel) {
+        this.username = username;
+        this._id = _id;
         this.password = password;
         this.name = name;
         this.address = address;
@@ -49,6 +64,14 @@ public class User {
     }
     public String getEmail() {
         return email;
+    }
+
+    public String getId() {
+        return _id;
+    }
+
+    public void setId(String id) {
+        this._id = id;
     }
 
 

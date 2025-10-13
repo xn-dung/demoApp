@@ -2,16 +2,20 @@ package com.example.myapplication.UI;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.GridView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.content.Intent;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.widget.EditText;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.example.myapplication.Adapter.MyArrayAdapter;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.example.myapplication.Adapter.FoundFoodAdapter;
 import com.example.myapplication.model.BaiDang;
 import com.example.myapplication.model.NguyenLieu;
 import com.example.myapplication.model.User;
@@ -23,51 +27,52 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.*;
-public class HomeActivity extends AppCompatActivity{
-    private TextView errorMessage;
-    private TextView fullName;
 
-    private User user;
 
-    private GridView gv;
-    private ArrayList<BaiDang> listBD;
-    private MyArrayAdapter myAdapter;
-    private ArrayList<NguyenLieu> nguyenLieu;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState)  {
+public class FoundFoodActivity extends AppCompatActivity{
+    String ten;
+    ArrayList<NguyenLieu> nguyenLieu;
+    ArrayList<BaiDang> bd;
+    ListView lv;
+    FoundFoodAdapter myadapter;
+    TextView texname;
+    User user;
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
-        setContentView(R.layout.home);
-        Intent intent = getIntent();
-        user = (User) intent.getSerializableExtra("user");
-        String fullname = user.getFullname();
-        user.setFullname(fullname);
-        fullName = findViewById(R.id.textFullName);
-        fullName.setText(fullname);
+        setContentView(R.layout.found_food);
+        lv = findViewById(R.id.outfood);
+        texname = findViewById(R.id.textFullName);
+        bd = new ArrayList<>();
+        int type = getIntent().getIntExtra("type", 0);
+        user = (User) getIntent().getSerializableExtra("user");
+        if(type == 1){
+            bd = (ArrayList<BaiDang>) getIntent().getSerializableExtra("data");
+            myadapter = new FoundFoodAdapter( R.layout.food_card_home, FoundFoodActivity.this, bd);
+            lv.setAdapter(myadapter);
+        }
+        else{
+            String foodName = getIntent().getStringExtra("search");
+            searchFood(foodName);
+            myadapter = new FoundFoodAdapter( R.layout.food_card_home, FoundFoodActivity.this, bd);
+            lv.setAdapter(myadapter);
+        }
 
-        gv = findViewById(R.id.gridFoods);
-        listBD = new ArrayList<>();
-        takeBD();
-        myAdapter = new MyArrayAdapter(HomeActivity.this, R.layout.layout_item, listBD);
-        gv.setAdapter(myAdapter);
-
-        gv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intentBD = new Intent(HomeActivity.this, DetailFoodActivity.class);
-                BaiDang chonBD = listBD.get(position);
-                Toast.makeText(HomeActivity.this, "Bạn đã chọn món " + chonBD.getTenMon(), Toast.LENGTH_SHORT).show();
-                intentBD.putExtra("data", chonBD);
-                intentBD.putExtra("user", user);
-                startActivity(intentBD);
+                Intent intentHehe = new Intent(FoundFoodActivity.this, DetailFoodActivity.class);
+                BaiDang chonBD = bd.get(position);
+                Toast.makeText(FoundFoodActivity.this, "Bạn đã chọn món " + chonBD.getTenMon(), Toast.LENGTH_SHORT).show();
+                intentHehe.putExtra("data", chonBD);
+                intentHehe.putExtra("user", user);
+                startActivity(intentHehe);
             }
         });
-
 
         BottomNavigationView botNav = findViewById(R.id.bottomNavView);
         botNav.setSelectedItemId(R.id.menuHome);
@@ -75,40 +80,40 @@ public class HomeActivity extends AppCompatActivity{
         botNav.setOnItemSelectedListener(menuItem -> {
             int id = menuItem.getItemId();
             if (id == R.id.menuHome) {
-                Intent intent2 = new Intent(HomeActivity.this, HomeActivity.class);
+                Intent intent2 = new Intent(FoundFoodActivity.this, HomeActivity.class);
                 intent2.putExtra("user", user);
                 startActivity(intent2);
                 return true;
 
             } else if (id == R.id.menuProfile){
-                Intent intent2 = new Intent(HomeActivity.this, ProfileeActivity.class);
+                Intent intent2 = new Intent(FoundFoodActivity.this, ProfileeActivity.class);
                 intent2.putExtra("user", user);
                 startActivity(intent2);
                 return true;
             } else if (id == R.id.menuSearch){
-                Intent intent2 = new Intent(HomeActivity.this, SearchActivity.class);
+                Intent intent2 = new Intent(FoundFoodActivity.this, SearchActivity.class);
                 intent2.putExtra("user", user);
                 startActivity(intent2);
                 return true;
             }
             return false;
         });
-
-
     }
 
-    private void takeBD(){
-        String url = "https://mobilenodejs.onrender.com/api/baidang";
+    private void searchFood(String foodName) {
+        String url = "https://mobilenodejs.onrender.com/api/baidang/search";
         RequestQueue queue = Volley.newRequestQueue(this);
+        try {
+            JSONObject jsonBody = new JSONObject();
+            jsonBody.put("tenMon", foodName);
 
-        try{
             JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
-                    Request.Method.GET,
+                    Request.Method.POST,
                     url,
                     null, // Đặt null ở đây, vì ta sẽ override body
                     response -> {
                         try {
-                            listBD.clear();
+                            bd.clear();
                             for (int i = 0; i < response.length(); i++) {
                                 JSONObject obj = response.getJSONObject(i);
 
@@ -120,7 +125,6 @@ public class HomeActivity extends AppCompatActivity{
                                 baiDang.setLinkYtb(obj.optString("linkYtb", ""));
                                 baiDang.setLuotThich(obj.optInt("luotThich", 0));
                                 baiDang.setImage(obj.optString("image", ""));
-
                                 JSONArray nlArray = obj.getJSONArray("nguyenLieu");
                                 nguyenLieu = new ArrayList<>();
                                 for(int j = 0; j < nlArray.length(); j++){
@@ -128,40 +132,37 @@ public class HomeActivity extends AppCompatActivity{
                                 }
                                 baiDang.setNguyenLieu(nguyenLieu);
 
-                                listBD.add(baiDang);
+                                bd.add(baiDang);
                             }
-                            myAdapter.notifyDataSetChanged();
-
+                            myadapter.notifyDataSetChanged();
+                            Toast.makeText(this, "Tìm thấy " + bd.size() + " món", Toast.LENGTH_SHORT).show();
 
                         } catch (Exception e) {
                             Toast.makeText(this, "Lỗi xử lý dữ liệu: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     },
                     error -> Toast.makeText(this, "Lỗi kết nối: " + error.toString(), Toast.LENGTH_SHORT).show()
-            );
+            ) {
+                @Override
+                public byte[] getBody() {
+                    return jsonBody.toString().getBytes();
+                }
+
+                @Override
+                public String getBodyContentType() {
+                    return "application/json; charset=utf-8";
+                }
+            };
+
             queue.add(jsonArrayRequest);
-        } catch (Exception e){
+
+        } catch (Exception e) {
             e.printStackTrace();
             Toast.makeText(this, "Lỗi tạo request", Toast.LENGTH_SHORT).show();
         }
     }
+
 }
 
 
-
-//BottomNavigationView botNav = findViewById(R.id.bottomNavView);
-//        botNav.setSelectedItemId(R.id.menuHome);
-//
-//        botNav.setOnItemSelectedListener(menuItem -> {
-//int id = menuItem.getItemId();
-//            if (id == R.id.menuHome) {
-//startActivity(new Intent(DetailFoodActivity.this, MainActivity.class));
-//        } else if (id == R.id.menuProfile){
-//Intent intent = new Intent(DetailFoodActivity.this, ProfileeActivity.class);
-//startActivity(intent);
-//            } else if (id == R.id.menuSearch){
-//startActivity(new Intent(DetailFoodActivity.this, SearchActivity.class));
-//        }
-//        return false;
-//        });
 

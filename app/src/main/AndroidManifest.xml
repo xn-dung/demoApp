@@ -27,6 +27,24 @@
         <activity
             android:name=".UI.HomeActivity"
             android:exported="true"/>
+        <activity
+            android:name=".UI.FoundFoodActivity"
+            android:exported="true"/>
+        <activity
+            android:name=".UI.SeacrchFoodByNameActivity"
+            android:exported="true"/>
+        <activity
+            android:name=".UI.SearchActivity"
+            android:exported="true"/>
+        <activity
+            android:name=".UI.ProfileeActivity"
+            android:exported="true"/>
+        <activity
+            android:name=".UI.EditProfileActivity"
+            android:exported="true"/>
+        <activity android:name=".UI.DetailFoodActivity"
+            android:exported="true"/>
+
     </application>
 
 </manifest>

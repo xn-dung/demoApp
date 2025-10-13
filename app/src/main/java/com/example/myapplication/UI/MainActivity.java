@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.widget.EditText;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.myapplication.model.User;
@@ -77,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     private void loginWithAPI(String username, String password){
-        String url = "https://661r3b81-3000.asse.devtunnels.ms/api/login";
+        String url = "https://mobilenodejs.onrender.com/api/nguoidung/login";
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         HashMap<String,String> params = new HashMap<>();
         params.put("username",username);
@@ -90,21 +91,28 @@ public class MainActivity extends AppCompatActivity {
                 jsonBody,
                 response -> {
                     try {
+                        String id = response.getString("_id");
                         String name = response.getString("name");
+                        String address = response.getString("address");
+                        String email = response.getString("email");
+                        String phone = response.getString("phone");
+                        String userName = response.getString("username");
+                        String passWord = response.getString("password");
+                        User logginUser= new User(id, userName,passWord,name,address,email,phone);
 
 
-                        if (!name.isEmpty()) {
+                        if (!logginUser.getFullname().isEmpty()) {
                             Intent intent = new Intent(MainActivity.this, HomeActivity.class);
-                            intent.putExtra("fullname", name);
+                            intent.putExtra("user",logginUser);
                             startActivity(intent);
                         } else {
-                            displayError("Sai tài khoản hoặc mật khẩu");
+                            Toast.makeText(MainActivity.this,"Sai tài khoản hoặc mật khẩu",Toast.LENGTH_SHORT).show();
                         }
                     } catch (Exception e) {
-                        displayError("Lỗi parse JSON: " + e.getMessage());
+                        Toast.makeText(MainActivity.this,"Lỗi parse JSON: " + e.getMessage(),Toast.LENGTH_SHORT).show();
                     }
                 },
-                error -> displayError("Lỗi kết nối: " + error.toString())
+                error -> Toast.makeText(MainActivity.this,"Lỗi kết nối: " + error.toString(),Toast.LENGTH_SHORT).show()
         );
 
         requestQueue.add(jsonObjectRequest);

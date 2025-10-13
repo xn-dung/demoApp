@@ -129,7 +129,7 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
     private void RegisterWithAPI(User user){
-        String url = "https://661r3b81-3000.asse.devtunnels.ms/api/register";
+        String url = "https://mobilenodejs.onrender.com/api/nguoidung/register";
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         HashMap<String,String> params = new HashMap<>();
         params.put("username",user.getUsername());
@@ -164,7 +164,7 @@ public class RegisterActivity extends AppCompatActivity {
         requestQueue.add(jsonObjectRequest);
     }
     private void findUser(String username){
-        String url = "https://661r3b81-3000.asse.devtunnels.ms/api/user";
+        String url = "https://mobilenodejs.onrender.com/api/nguoidung";
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         HashMap<String,String> params = new HashMap<>();
         params.put("username",username);
