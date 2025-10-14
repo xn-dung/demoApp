@@ -86,7 +86,7 @@ public class RegisterActivity extends AppCompatActivity {
                 }
                 else{
                     User user = new User(userName,passWord,fullName,Address,Email,Tel);
-                    findUser(user);
+                    RegisterWithAPI(user);
                 }
 
 
@@ -103,7 +103,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void RegisterWithAPI(User user){
-        String url = "https://661r3b81-3000.asse.devtunnels.ms/api/nguoidung/register";
+        String url = "https://mobilenodejs.onrender.com/api/nguoidung/register";
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         HashMap<String,String> params = new HashMap<>();
         params.put("username",user.getUsername());
@@ -126,49 +126,23 @@ public class RegisterActivity extends AppCompatActivity {
                             Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
                             startActivity(intent);
                         } else {
-                            Toast.makeText(RegisterActivity.this, "Lỗi thông tin đăng kí", Toast.LENGTH_SHORT).show();
-                        }
-                    } catch (Exception e) {
-                        Toast.makeText(RegisterActivity.this, "Lỗi parse JSON: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                },
-                error -> Toast.makeText(RegisterActivity.this, "Lỗi kết nối: " + error.toString(), Toast.LENGTH_SHORT).show()
-        );
-
-        requestQueue.add(jsonObjectRequest);
-    }
-    private void findUser(User user){
-        String url = "https://mobilenodejs.onrender.com/api/nguoidung";
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        HashMap<String,String> params = new HashMap<>();
-        params.put("username",user.getUsername());
-        JSONObject jsonBody = new JSONObject(params);
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                Request.Method.POST,
-                url,
-                jsonBody,
-                response -> {
-                    try {
-                        String name = response.optString("name", "");
-                        if (!name.isEmpty()) {
-                            Toast.makeText(RegisterActivity.this, "Tên người dùng đã tồn tại", Toast.LENGTH_SHORT).show();
-
-                        } else {
-                            RegisterWithAPI(user);
-
+                            Toast.makeText(RegisterActivity.this, "", Toast.LENGTH_SHORT).show();
                         }
                     } catch (Exception e) {
                         Toast.makeText(RegisterActivity.this, "Lỗi parse JSON: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 },
                 error -> {
-                    Toast.makeText(RegisterActivity.this,  "Lỗi kết nối: " + error.toString(), Toast.LENGTH_SHORT).show();
-
+                    if (error.networkResponse != null && (error.networkResponse.statusCode == 409 || error.networkResponse.statusCode == 400)) {
+                        Toast.makeText(RegisterActivity.this, "Username này đã tồn tại, vui lòng chọn tên khác.", Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(RegisterActivity.this, "Lỗi kết nối hoặc server có vấn đề: " + error.toString(), Toast.LENGTH_LONG).show();
+                    }
                 }
-
         );
-        requestQueue.add(jsonObjectRequest);
 
+        requestQueue.add(jsonObjectRequest);
     }
+
 
 }

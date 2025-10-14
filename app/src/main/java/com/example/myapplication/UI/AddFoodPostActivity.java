@@ -182,8 +182,8 @@ public class AddFoodPostActivity extends AppCompatActivity {
             jsonBody.put("cachLam", bd.getCachLam());
             jsonBody.put("nguyenLieuDinhLuong", bd.getNguyenLieuDinhLuong());
             jsonBody.put("linkYtb", bd.getLinkYtb());
-            jsonBody.put("luotThich", bd.getLuotThich());
             jsonBody.put("image", bd.getImage());
+            jsonBody.put("luotThich", bd.getLuotThich());
 
             JSONArray nguyenLieuArray = new JSONArray();
             for (NguyenLieu nl : bd.getNguyenLieu()) {
