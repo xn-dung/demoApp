@@ -31,7 +31,7 @@ public class ProfileeActivity extends AppCompatActivity{
     private Button btnLogout;
     private TextView userFullname;
     private TextView userEmail;
-    private TextView textSettings;
+    private LinearLayout textSettings;
     private User user;
     private BottomNavigationView bottomNavigationView;
     @Override
@@ -41,7 +41,7 @@ public class ProfileeActivity extends AppCompatActivity{
         btnLogout = findViewById(R.id.btnLogout);
         userFullname = findViewById(R.id.userFullName);
         userEmail = findViewById(R.id.userEmail);
-        textSettings = findViewById(R.id.textSettings);
+        textSettings = findViewById(R.id.editProfileBtn);
         bottomNavigationView = findViewById(R.id.bottomNavView);
         Intent intent = getIntent();
         user = (User) intent.getSerializableExtra("user");
@@ -85,6 +85,12 @@ public class ProfileeActivity extends AppCompatActivity{
                 return true;
             } else if (id == R.id.menuSearch){
                 Intent intent2 = new Intent(ProfileeActivity.this, SearchActivity.class);
+                intent2.putExtra("user", user);
+                startActivity(intent2);
+                return true;
+            }
+            else if(id == R.id.menuAdd){
+                Intent intent2 = new Intent(ProfileeActivity.this, AddFoodPostActivity.class);
                 intent2.putExtra("user", user);
                 startActivity(intent2);
                 return true;

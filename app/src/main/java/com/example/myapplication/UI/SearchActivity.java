@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -43,6 +44,7 @@ public class SearchActivity extends AppCompatActivity {
     ArrayList<BaiDang> bd;
     private User user;
     ArrayList<NguyenLieu> al;
+    private TextView fullName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +61,8 @@ public class SearchActivity extends AppCompatActivity {
 
         tableLayout = findViewById(R.id.tablet);
         button = findViewById(R.id.button2);
+        fullName = findViewById(R.id.textFullName);
+        fullName.setText( "Hi, "+user.getFullname());
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -146,6 +150,12 @@ public class SearchActivity extends AppCompatActivity {
                 return true;
             } else if (id == R.id.menuSearch){
                 Intent intent2 = new Intent(SearchActivity.this, SearchActivity.class);
+                intent2.putExtra("user", user);
+                startActivity(intent2);
+                return true;
+            }
+            else if(id == R.id.menuAdd){
+                Intent intent2 = new Intent(SearchActivity.this, AddFoodPostActivity.class);
                 intent2.putExtra("user", user);
                 startActivity(intent2);
                 return true;

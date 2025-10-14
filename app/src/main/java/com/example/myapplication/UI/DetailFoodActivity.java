@@ -173,3 +173,5 @@ public class DetailFoodActivity extends AppCompatActivity {
         return url;
     }
 }
+//https://www.youtube.com/watch?v=WMLtKC0CwoA
+//https://youtu.be/ASL6ydl0F7E?si=bBuxQFvzAlTSEmQQ

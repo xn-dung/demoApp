@@ -96,6 +96,9 @@ public class EditProfileActivity extends AppCompatActivity{
                         if (!password.equals(confirmPassword)) {
                             Toast.makeText(EditProfileActivity.this, "Mật khẩu xác nhận không khớp", Toast.LENGTH_SHORT).show();
                         }
+                        else{
+                            changeProfile(user2);
+                        }
                     }
                     else {
                         if (!username.equals(user.getUsername())) {

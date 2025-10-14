@@ -20,6 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
+            android:id="@+id/textFullName"
             android:text="Hi, An"
             android:textColor="@android:color/white"
             android:textSize="20sp" />

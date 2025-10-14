@@ -91,6 +91,12 @@ public class HomeActivity extends AppCompatActivity{
                 startActivity(intent2);
                 return true;
             }
+            else if(id == R.id.menuAdd){
+                Intent intent2 = new Intent(HomeActivity.this, AddFoodPostActivity.class);
+                intent2.putExtra("user", user);
+                startActivity(intent2);
+                return true;
+            }
             return false;
         });
 
