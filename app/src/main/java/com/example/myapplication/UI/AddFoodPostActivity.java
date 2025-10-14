@@ -174,7 +174,7 @@ public class AddFoodPostActivity extends AppCompatActivity {
 
     }
     private void addfoodpost(BaiDang bd){
-        String url = "https://mobilenodejs.onrender.com/api/baidang/addbaidang";
+        String url = "https://mobilenodejs.onrender.com/api/nguoidung/add/" + user.getId();
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         JSONObject jsonBody = new JSONObject();
         try{
@@ -199,7 +199,7 @@ public class AddFoodPostActivity extends AppCompatActivity {
             return;
         }
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                Request.Method.PUT,
+                Request.Method.POST,
                 url,
                 jsonBody,
                 response -> {

@@ -77,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
             errorMessage.setVisibility(View.VISIBLE);
         }
     }
+
     private void loginWithAPI(String username, String password){
         String url = "https://mobilenodejs.onrender.com/api/nguoidung/login";
         RequestQueue requestQueue = Volley.newRequestQueue(this);
@@ -112,10 +113,12 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(MainActivity.this,"Lỗi parse JSON: " + e.getMessage(),Toast.LENGTH_SHORT).show();
                     }
                 },
-                error -> Toast.makeText(MainActivity.this,"Lỗi kết nối: " + error.toString(),Toast.LENGTH_SHORT).show()
+                error -> displayError("Sai tài khoản hoặc mật khẩu")
         );
 
         requestQueue.add(jsonObjectRequest);
     }
+
+
 
 }
